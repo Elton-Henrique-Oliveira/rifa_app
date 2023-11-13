@@ -42,10 +42,10 @@ public class AuthenticatorServiceImplementation implements AuthenticatorService 
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-        if(this.userRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+        if(this.userRepository.findByLoginUserDetailed(data.login()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        UserDataBase newUser = new UserDataBase(data.login(), encryptedPassword, data.role());
+        UserDataBase newUser = new UserDataBase(data.login(), encryptedPassword, data.role(), data.name());
 
         this.userRepository.save(newUser);
 

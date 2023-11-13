@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public interface UserService {
 
-    ResponseEntity create(UserDataBase userModel);
+    ResponseEntity create(
+            UserDataBase userModel
+    );
 
-    ResponseEntity getUser(String name);
+    ResponseEntity getUser(
+            String name
+    );
 }

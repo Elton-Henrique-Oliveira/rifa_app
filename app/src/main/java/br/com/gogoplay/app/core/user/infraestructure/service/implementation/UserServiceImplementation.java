@@ -21,10 +21,10 @@ public class UserServiceImplementation implements UserService {
         return userUseCase.createUser(userModel);
     }
 
-    @GetMapping("/")
+    @GetMapping("/{login}")
     public ResponseEntity getUser(
-            @RequestParam(name = "name", required = false) String name
-    ){
-        return userUseCase.getUserByUserName(name);
+            @PathVariable String login
+    ) {
+        return userUseCase.getUserByLogin(login);
     }
 }

@@ -29,11 +29,15 @@ public class UserDataBase implements UserDetails {
     private UUID id;
 
     @Column(unique = true)
-    private String login;
-    private String password;
+    private String username;
     private String name;
+    private String password;
+    private String description;
+    private String riotId;
     private boolean isActive;
+    private LocalDateTime birthDate;
     private String email;
+    private String login;
     private UserRole role;
 
     @CreationTimestamp
@@ -44,19 +48,18 @@ public class UserDataBase implements UserDetails {
     @OneToMany
     private List<ContactDataBase> contacts;
 
-    public UserDataBase(String login, String password, UserRole role) {
+    public UserDataBase (String login, String password, UserRole role, String name){
         this.login = login;
         this.password = password;
         this.role = role;
+        this.name = name;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == UserRole.ADMIN)
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
-
     @Override
     public String getUsername() {
         return login;

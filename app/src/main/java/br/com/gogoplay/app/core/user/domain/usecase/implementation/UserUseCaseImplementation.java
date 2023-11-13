@@ -32,4 +32,9 @@ public class UserUseCaseImplementation implements UserUseCase{
     public ResponseEntity getUserByUserName(String username){
         return ResponseEntity.status(HttpStatus.OK).body(this.userRepository.findByUsername(username));
     }
+
+    @Override
+    public ResponseEntity getUserByLogin(String login){
+        return ResponseEntity.status(HttpStatus.OK).body(this.userRepository.findByLoginUserDataBase(login));
+    }
 }

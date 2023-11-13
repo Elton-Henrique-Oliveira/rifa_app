@@ -8,4 +8,6 @@ public interface UserUseCase {
     ResponseEntity createUser (UserDataBase userModel);
 
     ResponseEntity getUserByUserName(String username);
+
+    ResponseEntity getUserByLogin(String login);
 }
