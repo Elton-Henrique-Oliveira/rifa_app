@@ -6,6 +6,7 @@ import br.com.gogoplay.app.implementation.games.animals.domain.entities.AnimalGa
 import br.com.gogoplay.app.implementation.games.animals.domain.usecase.AnimalsUseCase;
 import br.com.gogoplay.app.implementation.games.animals.infraestructure.database.AnimalsDataBase;
 import br.com.gogoplay.app.implementation.games.animals.infraestructure.database.implementation.AnimalsRepository;
+import br.com.gogoplay.app.implementation.games.infraestructure.database.GameDataBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class AnimalsUseCaseImplementation implements AnimalsUseCase {
 
         Optional<UserDataBase> user = userRepository.findById(data.user_id());
 
-        if (user == null) {
+        if (!user.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(data);
         }
 
@@ -35,7 +36,7 @@ public class AnimalsUseCaseImplementation implements AnimalsUseCase {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(data);
         }
 
-        AnimalsDataBase bicho = new AnimalsDataBase(data.user_id(), data.cpf(), data.bicho(), data.aposta(), data.aposta());
+        AnimalsDataBase bicho = new AnimalsDataBase(data.user_id(), data.cpf(), data.bicho(), data.aposta(), data.aposta(), data.game_code());
 
         animalsRepository.save(bicho);
 

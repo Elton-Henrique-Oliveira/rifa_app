@@ -1,6 +1,7 @@
 package br.com.gogoplay.app.implementation.games.animals.infraestructure.database;
 
 import br.com.gogoplay.app.implementation.games.animals.domain.entities.Animals;
+import br.com.gogoplay.app.implementation.games.infraestructure.database.GameDataBase;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "jogo_bicho")
+@Entity(name = "animal_game")
 public class AnimalsDataBase {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -24,30 +25,32 @@ public class AnimalsDataBase {
 
     private UUID user_id;
 
-    //jogo
+    private Integer game_code;
 
     private String cpf;
 
     private Animals animal;
 
-    private BigDecimal aposta;
+    private BigDecimal bet;
 
-    private BigDecimal premio;
+    private BigDecimal prize;
 
-    private BigDecimal deve;
+    private BigDecimal must;
 
-    private Boolean pago;
+    private Boolean isPaid;
 
     @CreationTimestamp
     private LocalDateTime modifiedAt;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    public AnimalsDataBase(UUID user_id, String cpf, Animals bicho, BigDecimal aposta, BigDecimal deve){
+    public AnimalsDataBase(UUID user_id, String cpf, Animals animal, BigDecimal bet, BigDecimal must, int game_code){
         this.user_id = user_id;
         this.cpf = cpf;
-        this.animal = bicho;
-        this.aposta = aposta;
-        this.deve = deve;
+        this.animal = animal;
+        this.bet = bet;
+        this.must = must;
+        this.game_code = game_code;
     }
 }
