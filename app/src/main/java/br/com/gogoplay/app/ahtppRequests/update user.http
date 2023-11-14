@@ -1,0 +1,16 @@
+PUT http://localhost:8080/users/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6ImFkbWluIiwiZXhwIjoxNjk5OTg1OTEzfQ.WXs9dIDg_mInFvz5Qr_0F6yXnpSYZdT9ouR0FJK5wqA
+
+{
+  "id": "3e0f1722-957c-46a5-bffa-0e789490af31",
+  "username": "elton",
+  "name": "Elton Henrique de Oliveira",
+  "password": null,
+  "description": "Elton é um cara legal.",
+  "isActive": true,
+  "birthDate": "2001-04-25",
+  "email": "elton.h.oli@gmail.com",
+  "login": null,
+  "role": "ADMIN"
+}

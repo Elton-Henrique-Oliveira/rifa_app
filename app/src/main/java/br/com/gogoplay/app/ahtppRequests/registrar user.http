@@ -1,4 +1,4 @@
-POST http://localhost:8080/auth/register
+PUT http://localhost:8080/users/
 Content-Type: application/json
 
 {

@@ -13,6 +13,10 @@ public interface UserService {
             UserDataBase userModel
     );
 
+    ResponseEntity update(
+            UserDataBase userModel
+    );
+
     ResponseEntity getUser(
             String name
     );

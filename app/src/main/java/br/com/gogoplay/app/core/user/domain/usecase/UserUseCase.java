@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserUseCase {
 
-    ResponseEntity createUser (UserDataBase userModel);
+    ResponseEntity create(UserDataBase userModel);
+
+    ResponseEntity update(UserDataBase userModel);
 
     ResponseEntity getUserByUserName(String username);
 
