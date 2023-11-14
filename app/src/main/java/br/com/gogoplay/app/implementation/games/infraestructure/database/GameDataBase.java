@@ -25,8 +25,6 @@ public class GameDataBase {
 
     private String observation;
 
-    private Animals animal;
-
     private BigDecimal minValue;
 
     private BigDecimal maxValue;
@@ -45,9 +43,8 @@ public class GameDataBase {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    public GameDataBase(String observation, Animals animal, BigDecimal minValue, BigDecimal maxValue, boolean finalized, int prizeMultiply, LocalDateTime drawAt) {
+    public GameDataBase(String observation, BigDecimal minValue, BigDecimal maxValue, boolean finalized, int prizeMultiply, LocalDateTime drawAt) {
         this.observation = observation;
-        this.animal = animal;
         this.maxValue = maxValue;
         this.minValue = minValue;
         this.finalized = finalized;

@@ -1,4 +1,4 @@
-package br.com.gogoplay.app.core.user.infra.security;
+package br.com.gogoplay.app.core.user.infraestructure.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

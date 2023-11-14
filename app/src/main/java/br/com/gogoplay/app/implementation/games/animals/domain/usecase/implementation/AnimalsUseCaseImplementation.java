@@ -26,17 +26,17 @@ public class AnimalsUseCaseImplementation implements AnimalsUseCase {
 
     public ResponseEntity create(AnimalGameDTO data) {
 
-        Optional<UserDataBase> user = userRepository.findById(data.user_id());
+        Optional<UserDataBase> user = userRepository.findById(data.user().getId());
 
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(data);
         }
 
-        if (Integer.parseInt(data.aposta() + "") <= 0) {
+        if (Integer.parseInt(data.bet() + "") <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(data);
         }
 
-        AnimalsDataBase bicho = new AnimalsDataBase(data.user_id(), data.cpf(), data.bicho(), data.aposta(), data.aposta(), data.game_code());
+        AnimalsDataBase bicho = new AnimalsDataBase(data.user(), data.cpf(), data.animal(), data.bet(), data.bet(), data.game());
 
         animalsRepository.save(bicho);
 

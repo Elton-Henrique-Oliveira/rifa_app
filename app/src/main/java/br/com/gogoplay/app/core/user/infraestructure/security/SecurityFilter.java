@@ -1,4 +1,4 @@
-package br.com.gogoplay.app.core.user.infra.security;
+package br.com.gogoplay.app.core.user.infraestructure.security;
 
 import br.com.gogoplay.app.core.user.infraestructure.database.implementation.UserRepository;
 import jakarta.servlet.FilterChain;

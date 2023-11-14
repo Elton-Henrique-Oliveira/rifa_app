@@ -1,0 +1,31 @@
+POST http://localhost:8080/bicho/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6ImFkbWluIiwiZXhwIjoxNjk5OTg1OTEzfQ.WXs9dIDg_mInFvz5Qr_0F6yXnpSYZdT9ouR0FJK5wqA
+
+{
+  "user": {
+    "id": "3e0f1722-957c-46a5-bffa-0e789490af31",
+    "username": null,
+    "name": null,
+    "password": null,
+    "description": null,
+    "isActive": null,
+    "birthDate": null,
+    "email": null,
+    "login": null,
+    "role": null
+  },
+  "cpf": "4944",
+  "animal": "1",
+  "bet": "600",
+  "game": {
+    "code": 1,
+    "observation": null,
+    "minValue": null,
+    "maxValue": null,
+    "finalized": null,
+    "prizeMultiply": null,
+    "drawAnimal": null,
+    "drawAt": null
+  }
+}

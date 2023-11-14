@@ -3,7 +3,7 @@ package br.com.gogoplay.app.core.user.infraestructure.service.implementation;
 import br.com.gogoplay.app.core.user.domain.entities.AuthenticationDTO;
 import br.com.gogoplay.app.core.user.domain.entities.LoginResponseDTO;
 import br.com.gogoplay.app.core.user.domain.entities.RegisterDTO;
-import br.com.gogoplay.app.core.user.infra.security.TokenService;
+import br.com.gogoplay.app.core.user.infraestructure.security.TokenService;
 import br.com.gogoplay.app.core.user.infraestructure.database.UserDataBase;
 import br.com.gogoplay.app.core.user.infraestructure.database.implementation.UserRepository;
 import br.com.gogoplay.app.core.user.infraestructure.service.AuthenticatorService;

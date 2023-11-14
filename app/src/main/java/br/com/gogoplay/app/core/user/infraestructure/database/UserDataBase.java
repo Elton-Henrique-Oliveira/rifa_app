@@ -33,10 +33,10 @@ public class UserDataBase implements UserDetails {
     private String name;
     private String password;
     private String description;
-    private String riotId;
     private boolean isActive;
     private LocalDateTime birthDate;
     private String email;
+    @Column(unique = true)
     private String login;
     private UserRole role;
 

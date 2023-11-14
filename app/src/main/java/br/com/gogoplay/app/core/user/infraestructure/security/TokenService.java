@@ -1,4 +1,4 @@
-package br.com.gogoplay.app.core.user.infra.security;
+package br.com.gogoplay.app.core.user.infraestructure.security;
 
 import br.com.gogoplay.app.core.user.infraestructure.database.UserDataBase;
 import com.auth0.jwt.JWT;
