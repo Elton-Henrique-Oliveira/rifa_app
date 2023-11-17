@@ -20,7 +20,7 @@ import java.util.UUID;
 @Entity(name = "users_contact_type")
 @Table(name = "users_contact_type")
 @EqualsAndHashCode(of = "id")
-public class UserContactTypeDataBase {
+public class ContactTypeDataBase {
 
     @Id
     @GeneratedValue(generator = "UUID")

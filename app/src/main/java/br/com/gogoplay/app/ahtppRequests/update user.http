@@ -1,23 +1,27 @@
 PUT http://localhost:8080/users/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzAwMDk3MTIxfQ.yyP2SWZGHh1QLfm8CyddoMY-5AORIHVObTNg2BeXS9Y
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzAwMjQ0MjkyfQ.-QCPcpjYG9WGGAyT2CHno86kPwkwrja7kKXejtyVDx4
+X-User: ""
 
 {
-  "id": "ba45c62e-26b1-42cc-b380-a3496fb066c3",
+  "id": "6d1af506-76eb-4f96-8d7f-d5cf75af3068",
   "birthDate": "2001-04-25",
   "description": "Elton é um cara legal.",
-  "email": "elton.h.oli@gmail.com",
   "name": "Elton Henrique de Oliveira",
-  "username": "elton",
-  "role": "SUPER",
+  "userName": "elton",
+  "role": "super",
   "contacts": [
     {
       "label": "47996330692",
-      "type": null
+      "type": {
+        "uuid": "361bf37e-9754-4ef4-bce3-c11f67ea9aa4"
+      }
     },
     {
-      "label": "facebook",
-      "type": null
+      "label": "elton.h.oli@gmail.com",
+      "type": {
+        "uuid": "e2c2e70c-29d0-4f47-85da-04ed2ebdf53a"
+      }
     }
   ]
 }

@@ -45,8 +45,6 @@ public class UserDataBase implements UserDetails {
 
     private LocalDate birthDate;
 
-    private String email;
-
     private UserRole role;
 
     @CreationTimestamp

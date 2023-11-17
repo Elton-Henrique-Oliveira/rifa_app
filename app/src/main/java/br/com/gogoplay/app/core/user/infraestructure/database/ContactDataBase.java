@@ -9,8 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
-@Table(name = "user_contact")
+@Entity(name = "users_contact")
+@Table(name = "users_contact")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -22,9 +22,13 @@ public class ContactDataBase {
 
     private String label;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "users_contact_type_id")
+    private ContactTypeDataBase type;
+
     @ManyToOne
-    @JoinColumn(name = "contact_type_id")
-    private UserContactTypeDataBase type;
+    @JoinColumn(name = "users_id")
+    private UserDataBase user;
 
     private Integer statusCode;
 
