@@ -1,9 +1,32 @@
-POST http://localhost:8080/auth/register
+POST http://localhost:8080/users/
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6InVzZXIiLCJleHAiOjE3MDAyNjI1NTl9.U_OHl8DZcROqwT-mNvFzwap0aatgIG_rCJbcBMCLsNA
 
 {
-  "login" : "admin",
-  "password" : "123",
-  "role" : "OWNER",
-  "name" : "Elton"
+  "birthDate": "2001-04-25",
+  "description": "Elton é um cara legal.",
+  "name": "Elton Henrique de Oliveira",
+  "userName": "lucas teste",
+  "role": "employer",
+  "login": "userTeste",
+  "contacts": [
+    {
+      "label": "5843775734534543",
+      "type": {
+        "uuid": "361bf37e-9754-4ef4-bce3-c11f67ea9aa4"
+      }
+    },
+    {
+      "label": "elton.oli.h@gmail.com",
+      "type": {
+        "uuid": "e2c2e70c-29d0-4f47-85da-04ed2ebdf53a"
+      }
+    },
+    {
+      "label": "josue@gmail.com",
+      "type": {
+        "uuid": "e2c2e70c-29d0-4f47-85da-04ed2ebdf53a"
+      }
+    }
+  ]
 }

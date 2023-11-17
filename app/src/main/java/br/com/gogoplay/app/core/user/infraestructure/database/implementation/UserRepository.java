@@ -1,5 +1,6 @@
 package br.com.gogoplay.app.core.user.infraestructure.database.implementation;
 
+import br.com.gogoplay.app.core.user.domain.entities.UserRole;
 import br.com.gogoplay.app.core.user.infraestructure.database.UserDataBase;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -25,6 +26,6 @@ public interface UserRepository extends JpaRepository<UserDataBase, UUID> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE users u SET u.birthDate = :birthDate, u.description = :description, u.name = :name, u.username = :userName WHERE u.id = :userId")
-    void updateUser(UUID userId, LocalDate birthDate, String description, String name, String userName);
+    @Query("UPDATE users u SET u.birthDate = :birthDate, u.description = :description, u.name = :name, u.username = :userName, u.role = :userRole WHERE u.id = :userId")
+    void updateUser(UUID userId, LocalDate birthDate, String description, String name, String userName, UserRole userRole);
 }

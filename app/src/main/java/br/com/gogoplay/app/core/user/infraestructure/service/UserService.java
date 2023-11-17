@@ -1,17 +1,15 @@
 package br.com.gogoplay.app.core.user.infraestructure.service;
 
 import br.com.gogoplay.app.core.user.domain.entities.UserAlterDTO;
-import br.com.gogoplay.app.core.user.infraestructure.database.UserDataBase;
+import br.com.gogoplay.app.core.user.domain.entities.UserCreateDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 public interface UserService {
 
     ResponseEntity create(
-            UserDataBase userModel
+            UserCreateDTO userModel,
+            String authorizationHeader
     );
 
     ResponseEntity update(

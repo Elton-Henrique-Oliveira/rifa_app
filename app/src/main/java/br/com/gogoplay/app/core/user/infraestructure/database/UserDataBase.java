@@ -1,6 +1,7 @@
 package br.com.gogoplay.app.core.user.infraestructure.database;
 
 import br.com.gogoplay.app.core.user.domain.entities.UserRole;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity(name = "users")
 @Table(name = "users")
 @EqualsAndHashCode(of = "id")

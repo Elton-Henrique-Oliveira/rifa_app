@@ -4,13 +4,13 @@ import lombok.Data;
 
 public enum UserRole {
 
-    OWNER(0, "owner"),
+    SUPER(0, "super"),
 
-    ADMIN(1, "admin"),
+    OWNER(1, "owner"),
 
-    EMPLOYER(2, "employer"),
+    ADMIN(2, "admin"),
 
-    SUPER(3, "super");
+    EMPLOYER(3, "employer");
 
     private int code;
     private String role;
@@ -32,6 +32,15 @@ public enum UserRole {
         for (UserRole userRole : UserRole.values()) {
             if (userRole.getRole().equals(role)) {
                 return userRole.getCode();
+            }
+        }
+        throw new IllegalArgumentException("Role not found: " + role);
+    }
+
+    public static UserRole getByRole(String role) {
+        for (UserRole userRole : UserRole.values()) {
+            if (userRole.getRole().equals(role)) {
+                return userRole;
             }
         }
         throw new IllegalArgumentException("Role not found: " + role);

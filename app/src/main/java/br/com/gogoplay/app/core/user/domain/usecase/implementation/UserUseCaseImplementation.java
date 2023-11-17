@@ -3,10 +3,10 @@ package br.com.gogoplay.app.core.user.domain.usecase.implementation;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import br.com.gogoplay.app.core.user.domain.entities.UserAlterDTO;
 import br.com.gogoplay.app.core.user.domain.entities.UserContactDTO;
+import br.com.gogoplay.app.core.user.domain.entities.UserCreateDTO;
 import br.com.gogoplay.app.core.user.domain.entities.UserRole;
 import br.com.gogoplay.app.core.user.domain.usecase.UserUseCase;
 import br.com.gogoplay.app.core.user.infraestructure.database.ContactDataBase;
-import br.com.gogoplay.app.core.user.infraestructure.database.ContactTypeDataBase;
 import br.com.gogoplay.app.core.user.infraestructure.database.UserDataBase;
 import br.com.gogoplay.app.core.user.infraestructure.database.implementation.UserContactRepository;
 import br.com.gogoplay.app.core.user.infraestructure.database.implementation.UserRepository;
@@ -14,13 +14,15 @@ import br.com.gogoplay.app.core.user.infraestructure.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
+@RestController
 public class UserUseCaseImplementation implements UserUseCase {
 
     @Autowired
@@ -29,23 +31,93 @@ public class UserUseCaseImplementation implements UserUseCase {
     @Autowired
     private UserContactRepository userContactRepository;
 
+    @Autowired
+    TokenService tokenService;
+
     @Override
     public ResponseEntity create(
-            UserDataBase userModel
+            UserCreateDTO userModel,
+            String authToken
     ) {
-        userModel.setPassword(BCrypt.withDefaults().hashToString(12, userModel.getPassword().toCharArray()));
 
-        if (this.userRepository.findByUsername(userModel.getUsername()) != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já existente no banco de dados!!");
+        if (!authToken.isEmpty() && !authToken.isBlank()) {
+            var login = tokenService.validateToken(authToken);
+
+            UserDataBase userLogin = userRepository.findByLoginUserDataBase(login);
+
+            if (!verifyPermissionRoleRegisterAndLoginUser(userLogin.getRole(), UserRole.getByRole(userModel.role()))) {
+                return ResponseEntity.status(HttpStatus.OK).body("Role não liberada para esse usuário alterar.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body("Usuario sem permissão para cadastrar outro usuário.");
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.userRepository.save(userModel));
+        if (userModel.login().isEmpty() || userModel.login().isBlank()) {
+            return ResponseEntity.status(HttpStatus.OK).body("Usuario deve ser informado");
+        }
+
+        if (userModel.password() != null && (!userModel.password().isEmpty() || !userModel.password().isBlank())) {
+            return ResponseEntity.status(HttpStatus.OK).body("Senha não deve ser informada\npor padrão ela é gerada {login} + 123 e pode ser alterada pelo usuário após login.");
+        }
+
+        if (userModel.role().isBlank() || userModel.role().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body("Nível de permissão deve ser informado.");
+        }
+
+        String passwordNew = BCrypt.withDefaults().hashToString(12, (userModel.login() + "123").toCharArray());
+        UserRole userRole = UserRole.getByRole(userModel.role());
+        List<ContactDataBase> contacts = new ArrayList<>();
+
+        UserDataBase newUser = new UserDataBase();
+        newUser.setId(UUID.randomUUID());
+        newUser.setBirthDate(userModel.birthDate());
+        newUser.setDescription(userModel.description());
+        newUser.setUsername(userModel.userName());
+        newUser.setName(userModel.name());
+        newUser.setRole(userRole);
+        newUser.setLogin(userModel.login());
+        newUser.setPassword(passwordNew);
+        newUser.setIsActive(true);
+        newUser.setModifiedAt(LocalDateTime.now());
+        newUser.setCreatedAt(LocalDateTime.now());
+        userRepository.save(newUser);
+
+        for (UserContactDTO contact : userModel.contacts()) {
+            ContactDataBase userContact = new ContactDataBase();
+            userContact.setUuid(UUID.randomUUID());
+            userContact.setLabel(contact.label());
+            userContact.setType(contact.type());
+            userContact.setUser(newUser);
+            userContact.setStatusCode(0);
+            userContact.setModifiedAt(LocalDateTime.now());
+            userContact.setCreatedAt(LocalDateTime.now());
+            userContactRepository.save(userContact);
+
+            contacts.add(userContact);
+        }
+
+        newUser.setContacts(contacts);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com sucesso.");
     }
 
     @Override
     public ResponseEntity update(
-            UserAlterDTO userModel
+            UserAlterDTO userModel,
+            String authToken
     ) {
+
+        if (!authToken.isEmpty() && !authToken.isBlank()) {
+            var login = tokenService.validateToken(authToken);
+
+            UserDataBase userLogin = userRepository.findByLoginUserDataBase(login);
+
+            if (!verifyPermissionRoleRegisterAndLoginUser(userLogin.getRole(), UserRole.getByRole(userModel.role()))) {
+                return ResponseEntity.status(HttpStatus.OK).body("Role não liberada para esse usuário alterar.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body("Usuario sem permissão para alterar outro usuário.");
+        }
 
         Optional<UserDataBase> user = userRepository.findById(userModel.id());
         if (user.isEmpty()) {
@@ -59,7 +131,9 @@ public class UserUseCaseImplementation implements UserUseCase {
             return ResponseEntity.status(HttpStatus.OK).body("Nome deve ser informado.");
         }
 
-        userRepository.updateUser(userModel.id(), userModel.birthDate(), userModel.description(), userModel.name(), userModel.userName());
+        UserRole userRole = UserRole.getByRole(userModel.role());
+
+        userRepository.updateUser(userModel.id(), userModel.birthDate(), userModel.description(), userModel.name(), userModel.userName(), userRole);
         userContactRepository.deleteByUserID(user.get());
 
         for (UserContactDTO contact : userModel.contacts()) {
@@ -71,7 +145,6 @@ public class UserUseCaseImplementation implements UserUseCase {
             userContact.setStatusCode(0);
             userContact.setModifiedAt(LocalDateTime.now());
             userContact.setCreatedAt(LocalDateTime.now());
-
             userContactRepository.save(userContact);
         }
 
@@ -79,12 +152,11 @@ public class UserUseCaseImplementation implements UserUseCase {
     }
 
     @Override
-    public ResponseEntity getUserByUserName(String username) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.userRepository.findByUsername(username));
-    }
+    public boolean verifyPermissionRoleRegisterAndLoginUser(UserRole roleUserLogin, UserRole roleUserRegister) {
 
-    @Override
-    public ResponseEntity getUserByLogin(String login) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.userRepository.findByLoginUserDataBase(login));
+        int userRegisterRole = UserRole.getCodeByRole(roleUserRegister.getRole());
+        int userLoginRole = UserRole.getCodeByRole(roleUserLogin.getRole());
+
+        return userRegisterRole >= userLoginRole;
     }
 }
