@@ -1,10 +1,7 @@
 package br.com.gogoplay.app.core.user.domain.usecase.implementation;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import br.com.gogoplay.app.core.user.domain.entities.UserAlterDTO;
-import br.com.gogoplay.app.core.user.domain.entities.UserContactDTO;
-import br.com.gogoplay.app.core.user.domain.entities.UserCreateDTO;
-import br.com.gogoplay.app.core.user.domain.entities.UserRole;
+import br.com.gogoplay.app.core.user.domain.entities.*;
 import br.com.gogoplay.app.core.user.domain.usecase.UserUseCase;
 import br.com.gogoplay.app.core.user.infraestructure.database.ContactDataBase;
 import br.com.gogoplay.app.core.user.infraestructure.database.UserDataBase;
@@ -14,6 +11,9 @@ import br.com.gogoplay.app.core.user.infraestructure.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -149,6 +149,37 @@ public class UserUseCaseImplementation implements UserUseCase {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body("Usuário alterado com sucesso.");
+    }
+
+    @Override
+    public ResponseEntity alterPassword(
+            AlterPasswordDTO alterPassword,
+            String authToken
+    ){
+
+        if (!authToken.isEmpty() && !authToken.isBlank()) {
+            var login = tokenService.validateToken(authToken);
+
+            UserDataBase userLogin = userRepository.findByLoginUserDataBase(login);
+
+            var usernamePassword = new UsernamePasswordAuthenticationToken(userLogin, alterPassword.oldPassword());
+
+            if(!usernamePassword.isAuthenticated()){
+                return ResponseEntity.status(HttpStatus.OK).body("Senha anterior não está correta.");
+            }
+
+            String encryptedPassword = new BCryptPasswordEncoder().encode(alterPassword.newPassword());
+
+            if(!alterPassword.oldPassword().trim().equals(encryptedPassword)){
+                return ResponseEntity.status(HttpStatus.OK).body("Senha anterior é igual a atual.");
+            }
+
+            userRepository.updateUserPassword(userLogin.getId(), encryptedPassword);
+
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Senha alterada com sucesso.");
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body("Usuário não authenticado.");
+        }
     }
 
     @Override

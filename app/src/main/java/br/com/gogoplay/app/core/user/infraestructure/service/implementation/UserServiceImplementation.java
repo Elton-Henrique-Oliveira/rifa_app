@@ -1,5 +1,6 @@
 package br.com.gogoplay.app.core.user.infraestructure.service.implementation;
 
+import br.com.gogoplay.app.core.user.domain.entities.AlterPasswordDTO;
 import br.com.gogoplay.app.core.user.domain.entities.UserAlterDTO;
 import br.com.gogoplay.app.core.user.domain.entities.UserCreateDTO;
 import br.com.gogoplay.app.core.user.domain.usecase.implementation.UserUseCaseImplementation;
@@ -34,5 +35,16 @@ public class UserServiceImplementation implements UserService {
         String authToken = TokenUtils.extractToken(authorizationHeader);
 
         return userUseCase.update(userModel, authToken);
+    }
+
+    @PutMapping("/alterPassword")
+    public ResponseEntity alterPassword(
+            @RequestBody AlterPasswordDTO alterPassword,
+            @RequestHeader(name = "Authorization") String authorizationHeader
+    ) {
+
+        String authToken = TokenUtils.extractToken(authorizationHeader);
+
+        return userUseCase.alterPassword(alterPassword, authToken);
     }
 }
