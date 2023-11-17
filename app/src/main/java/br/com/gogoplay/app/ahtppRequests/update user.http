@@ -1,16 +1,23 @@
 PUT http://localhost:8080/users/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6ImFkbWluIiwiZXhwIjoxNjk5OTg1OTEzfQ.WXs9dIDg_mInFvz5Qr_0F6yXnpSYZdT9ouR0FJK5wqA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzAwMDk3MTIxfQ.yyP2SWZGHh1QLfm8CyddoMY-5AORIHVObTNg2BeXS9Y
 
 {
-  "id": "3e0f1722-957c-46a5-bffa-0e789490af31",
-  "username": "elton",
-  "name": "Elton Henrique de Oliveira",
-  "password": null,
-  "description": "Elton é um cara legal.",
-  "isActive": true,
+  "id": "ba45c62e-26b1-42cc-b380-a3496fb066c3",
   "birthDate": "2001-04-25",
+  "description": "Elton é um cara legal.",
   "email": "elton.h.oli@gmail.com",
-  "login": null,
-  "role": "ADMIN"
+  "name": "Elton Henrique de Oliveira",
+  "username": "elton",
+  "role": "SUPER",
+  "contacts": [
+    {
+      "label": "47996330692",
+      "type": null
+    },
+    {
+      "label": "facebook",
+      "type": null
+    }
+  ]
 }

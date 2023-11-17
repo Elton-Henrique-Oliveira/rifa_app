@@ -1,20 +1,26 @@
 package br.com.gogoplay.app.core.user.infraestructure.database;
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
-@Table(name = "user_contact")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class ContactDataBase {
+@Entity(name = "users_contact_type")
+@Table(name = "users_contact_type")
+@EqualsAndHashCode(of = "id")
+public class UserContactTypeDataBase {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -22,9 +28,7 @@ public class ContactDataBase {
 
     private String label;
 
-    @ManyToOne
-    @JoinColumn(name = "contact_type_id")
-    private UserContactTypeDataBase type;
+    private Integer code;
 
     private Integer statusCode;
 

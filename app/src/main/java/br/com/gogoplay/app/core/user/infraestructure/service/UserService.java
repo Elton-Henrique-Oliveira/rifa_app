@@ -16,8 +16,5 @@ public interface UserService {
     ResponseEntity update(
             UserDataBase userModel
     );
-
-    ResponseEntity getUser(
-            String name
-    );
 }
+

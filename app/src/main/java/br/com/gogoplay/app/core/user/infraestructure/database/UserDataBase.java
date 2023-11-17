@@ -31,36 +31,59 @@ public class UserDataBase implements UserDetails {
 
     @Column(unique = true)
     private String username;
+
     private String name;
-    private String password;
-    private String description;
-    private boolean isActive;
-    private LocalDate birthDate;
-    private String email;
+
     @Column(unique = true)
     private String login;
+
+    private String password;
+
+    private String description;
+
+    private boolean isActive;
+
+    private LocalDate birthDate;
+
+    private String email;
+
     private UserRole role;
 
     @CreationTimestamp
     private LocalDateTime modifiedAt;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @OneToMany
     private List<ContactDataBase> contacts;
 
-    public UserDataBase (String login, String password, UserRole role, String name){
+    public UserDataBase(String login, String password, UserRole role, String name) {
         this.login = login;
         this.password = password;
         this.role = role;
         this.name = name;
     }
 
+    public boolean getIsActive() {
+        return this.isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.SUPER)
+            return List.of(new SimpleGrantedAuthority("ROLE_SUPER"),new SimpleGrantedAuthority("ROLE_OWNER"), new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.OWNER)
+            return List.of(new SimpleGrantedAuthority("ROLE_OWNER"), new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.ADMIN)
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
+
     @Override
     public String getUsername() {
         return login;

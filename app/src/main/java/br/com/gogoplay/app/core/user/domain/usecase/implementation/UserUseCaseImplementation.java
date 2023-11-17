@@ -50,6 +50,7 @@ public class UserUseCaseImplementation implements UserUseCase{
         userModel.setLogin(user.get().getLogin());
         userModel.setCreatedAt(user.get().getCreatedAt());
         userModel.setModifiedAt(LocalDateTime.now());
+        userModel.setIsActive(true);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(this.userRepository.save(userModel));
     }
