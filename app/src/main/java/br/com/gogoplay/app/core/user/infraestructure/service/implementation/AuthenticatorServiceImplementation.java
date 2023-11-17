@@ -7,19 +7,23 @@ import br.com.gogoplay.app.core.user.infraestructure.security.TokenService;
 import br.com.gogoplay.app.core.user.infraestructure.database.UserDataBase;
 import br.com.gogoplay.app.core.user.infraestructure.database.implementation.UserRepository;
 import br.com.gogoplay.app.core.user.infraestructure.service.AuthenticatorService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(value = "/auth", produces = {"application/json"})
+@Tag(name = "Gogo Play")
 public class AuthenticatorServiceImplementation implements AuthenticatorService {
 
     @Autowired
@@ -31,13 +35,25 @@ public class AuthenticatorServiceImplementation implements AuthenticatorService 
     @Autowired
     private TokenService tokenService;
 
-    @PostMapping("/login")
+    @Operation(summary = "Faz o login na aplicação.", method = "POST")
+    @ApiResponses(value ={
+            @ApiResponse(responseCode = "200", description = "Login feito com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Informações informadas inválida."),
+            @ApiResponse(responseCode = "401", description = "Usuário não autenticado."),
+            @ApiResponse(responseCode = "403", description = "Usuário sem permissão."),
+            @ApiResponse(responseCode = "500", description = "Erro ao tentar logar no sistema."),
+    })
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        var token = tokenService.generateToken((UserDataBase)auth.getPrincipal());
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        if(auth.isAuthenticated()){
+            var token = tokenService.generateToken((UserDataBase)auth.getPrincipal());
+            return ResponseEntity.ok(new LoginResponseDTO(token));
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Informações de login informado, são inválidos.");
+        }
     }
 
     @PostMapping("/register")

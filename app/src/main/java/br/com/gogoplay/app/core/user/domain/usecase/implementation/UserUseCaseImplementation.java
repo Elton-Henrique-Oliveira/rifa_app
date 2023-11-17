@@ -12,9 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@RestController
+@Service
 public class UserUseCaseImplementation implements UserUseCase {
 
     @Autowired
@@ -46,22 +45,22 @@ public class UserUseCaseImplementation implements UserUseCase {
             UserDataBase userLogin = userRepository.findByLoginUserDataBase(login);
 
             if (!verifyPermissionRoleRegisterAndLoginUser(userLogin.getRole(), UserRole.getByRole(userModel.role()))) {
-                return ResponseEntity.status(HttpStatus.OK).body("Role não liberada para esse usuário alterar.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Role não liberada para esse usuário alterar.");
             }
         } else {
-            return ResponseEntity.status(HttpStatus.OK).body("Usuario sem permissão para cadastrar outro usuário.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuario sem permissão para cadastrar outro usuário.");
         }
 
         if (userModel.login().isEmpty() || userModel.login().isBlank()) {
-            return ResponseEntity.status(HttpStatus.OK).body("Usuario deve ser informado");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuario deve ser informado");
         }
 
         if (userModel.password() != null && (!userModel.password().isEmpty() || !userModel.password().isBlank())) {
-            return ResponseEntity.status(HttpStatus.OK).body("Senha não deve ser informada\npor padrão ela é gerada {login} + 123 e pode ser alterada pelo usuário após login.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Senha não deve ser informada\npor padrão ela é gerada {login} + 123 e pode ser alterada pelo usuário após login.");
         }
 
         if (userModel.role().isBlank() || userModel.role().isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body("Nível de permissão deve ser informado.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nível de permissão deve ser informado.");
         }
 
         String passwordNew = BCrypt.withDefaults().hashToString(12, (userModel.login() + "123").toCharArray());
@@ -113,22 +112,22 @@ public class UserUseCaseImplementation implements UserUseCase {
             UserDataBase userLogin = userRepository.findByLoginUserDataBase(login);
 
             if (!verifyPermissionRoleRegisterAndLoginUser(userLogin.getRole(), UserRole.getByRole(userModel.role()))) {
-                return ResponseEntity.status(HttpStatus.OK).body("Role não liberada para esse usuário alterar.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Role não liberada para esse usuário alterar.");
             }
         } else {
-            return ResponseEntity.status(HttpStatus.OK).body("Usuario sem permissão para alterar outro usuário.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuario sem permissão para alterar outro usuário.");
         }
 
         Optional<UserDataBase> user = userRepository.findById(userModel.id());
         if (user.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body("Usuário não encontrado no banco de dados.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário não encontrado no banco de dados.");
         }
         System.out.println(userModel.userName());
         if (userModel.userName() == null || userModel.userName().isEmpty() || userModel.userName().isBlank()) {
-            return ResponseEntity.status(HttpStatus.OK).body("Nome de usuário deve ser informado.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nome de usuário deve ser informado.");
         }
         if (userModel.name() == null || userModel.name().isEmpty() || userModel.name().isBlank()) {
-            return ResponseEntity.status(HttpStatus.OK).body("Nome deve ser informado.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nome deve ser informado.");
         }
 
         UserRole userRole = UserRole.getByRole(userModel.role());
@@ -165,20 +164,20 @@ public class UserUseCaseImplementation implements UserUseCase {
             var usernamePassword = new UsernamePasswordAuthenticationToken(userLogin, alterPassword.oldPassword());
 
             if(!usernamePassword.isAuthenticated()){
-                return ResponseEntity.status(HttpStatus.OK).body("Senha anterior não está correta.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Senha anterior não está correta.");
             }
 
             String encryptedPassword = new BCryptPasswordEncoder().encode(alterPassword.newPassword());
 
             if(!alterPassword.oldPassword().trim().equals(encryptedPassword)){
-                return ResponseEntity.status(HttpStatus.OK).body("Senha anterior é igual a atual.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Senha anterior é igual a atual.");
             }
 
             userRepository.updateUserPassword(userLogin.getId(), encryptedPassword);
 
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Senha alterada com sucesso.");
+            return ResponseEntity.status(HttpStatus.OK).body("Senha alterada com sucesso.");
         } else {
-            return ResponseEntity.status(HttpStatus.OK).body("Usuário não authenticado.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário não authenticado.");
         }
     }
 
