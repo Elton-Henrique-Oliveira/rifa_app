@@ -1,0 +1,15 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+SELECT * FROM pg_extension WHERE extname = 'uuid-ossp';
+
+
+                  INSERT INTO users_contact_type (uuid, label, code, status_code, modified_at, created_at)
+VALUES (uuid_generate_v4(), 'Telefone', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO users_contact_type (uuid, label, code, status_code, modified_at, created_at)
+VALUES (uuid_generate_v4(), 'E-mail', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO users_contact_type (uuid, label, code, status_code, modified_at, created_at)
+VALUES (uuid_generate_v4(), 'Site', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+select * from users_contact_type;
