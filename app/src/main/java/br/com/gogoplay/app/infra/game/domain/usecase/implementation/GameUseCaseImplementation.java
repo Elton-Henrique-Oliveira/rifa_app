@@ -3,6 +3,7 @@ package br.com.gogoplay.app.infra.game.domain.usecase.implementation;
 import br.com.gogoplay.app.infra.game.domain.entities.GameCreateDTO;
 import br.com.gogoplay.app.infra.game.domain.usecase.GameUseCase;
 import br.com.gogoplay.app.infra.game.infra.database.GameDataBase;
+import br.com.gogoplay.app.infra.game.infra.database.GameTypeDataBase;
 import br.com.gogoplay.app.infra.game.infra.database.implementation.GameRepository;
 import br.com.gogoplay.app.infra.game.infra.database.implementation.GameTypeRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -10,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.sound.midi.SysexMessage;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static br.com.gogoplay.app.core.errors.GenericError.ERROR_CONVERT_JSON;
 import static br.com.gogoplay.app.infra.game.domain.errors.GameErrors.*;
 
 @Service
@@ -61,15 +62,23 @@ public class GameUseCaseImplementation implements GameUseCase {
             errors.add(DRAW_DATE_NOT_INFORMED);
         }
 
-        assert gameModel.type().getUuid() != null;
-        if(gameTypeRepository.getReferenceById(gameModel.type().getUuid()).getUuid() != null){
+        if(gameModel.type().getUuid() == null){
+            errors.add(GAME_TYPE_NOT_INFORMED);
+        }
+
+        GameTypeDataBase gameType = gameTypeRepository.findByUUID(gameModel.type().getUuid());
+        if (gameType == null) {
             errors.add(TYPE_NOT_REGISTERED);
         }
 
+        System.out.println(gameModel.type().getUuid());
+
+        assert gameModel.finalDate() != null;
         if(gameModel.finalDate().isBefore(gameModel.initialDate())){
             errors.add(FINAL_DATE_IS_BEFORE_INITIAL_DATE);
         }
 
+        assert gameModel.drawDate() != null;
         if(gameModel.drawDate().isBefore(gameModel.initialDate())){
             errors.add(DRAW_DATE_IS_BEFORE_INITIAL_DATE);
         }
@@ -86,7 +95,8 @@ public class GameUseCaseImplementation implements GameUseCase {
                 gameModel.prize(),
                 gameModel.initialDate(),
                 gameModel.finalDate(),
-                gameModel.drawDate()
+                gameModel.drawDate(),
+                gameModel.type()
         );
 
         gameRepository.save(newGame);

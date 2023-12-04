@@ -1,5 +1,6 @@
 package br.com.gogoplay.app.infra.game.infra.database;
 
+import br.com.gogoplay.app.infra.game.infra.database.implementation.GameTypeRepository;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -38,6 +40,7 @@ public class GameDataBase{
 
     private BigDecimal prize;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "game_type_uuid")
     private GameTypeDataBase type;
@@ -69,7 +72,9 @@ public class GameDataBase{
                         BigDecimal prize,
                         LocalDateTime initialDate,
                         LocalDateTime finalDate,
-                        LocalDateTime drawDate) {
+                        LocalDateTime drawDate,
+                        GameTypeDataBase type
+    ) {
         this.name = name;
         this.description = description;
         this.cost = cost;
@@ -78,5 +83,6 @@ public class GameDataBase{
         this.initialDate = initialDate;
         this.finalDate = finalDate;
         this.drawDate = drawDate;
+        this.type = type;
     }
 }
