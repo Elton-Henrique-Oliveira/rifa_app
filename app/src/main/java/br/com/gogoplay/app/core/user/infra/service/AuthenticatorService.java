@@ -1,4 +1,4 @@
-package br.com.gogoplay.app.core.user.infraestructure.service;
+package br.com.gogoplay.app.core.user.infra.service;
 
 
 import br.com.gogoplay.app.core.user.domain.entities.AuthenticationDTO;

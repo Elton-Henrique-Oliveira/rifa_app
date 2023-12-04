@@ -1,4 +1,4 @@
-package br.com.gogoplay.app.core.user.infraestructure.security;
+package br.com.gogoplay.app.core.user.infra.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +33,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, "/users/alterPassword").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/users/").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/users/").hasRole("ADMIN")
-
+                        .requestMatchers(HttpMethod.POST, "/game/").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserUseCase {
 
-    ResponseEntity create(UserCreateDTO userModel, String authToken);
+    ResponseEntity<String> create(UserCreateDTO userModel, String authToken);
 
-    ResponseEntity update(UserAlterDTO userModel, String authToken);
+    ResponseEntity<String> update(UserAlterDTO userModel, String authToken);
 
-    ResponseEntity alterPassword(AlterPasswordDTO alterPassword, String authToken);
+    ResponseEntity<String> alterPassword(AlterPasswordDTO alterPassword, String authToken);
 
     boolean verifyPermissionRoleRegisterAndLoginUser(UserRole roleUserLogin, UserRole roleUserRegister);
 }

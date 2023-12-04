@@ -1,6 +1,6 @@
-package br.com.gogoplay.app.core.user.infraestructure.service;
+package br.com.gogoplay.app.core.user.infra.service;
 
-import br.com.gogoplay.app.core.user.infraestructure.database.implementation.UserRepository;
+import br.com.gogoplay.app.core.user.infra.database.implementation.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

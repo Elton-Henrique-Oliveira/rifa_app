@@ -1,4 +1,4 @@
-package br.com.gogoplay.app.core.user.infraestructure.service;
+package br.com.gogoplay.app.core.user.infra.service;
 
 import br.com.gogoplay.app.core.user.domain.entities.AlterPasswordDTO;
 import br.com.gogoplay.app.core.user.domain.entities.UserAlterDTO;
@@ -8,17 +8,17 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserService {
 
-    ResponseEntity create(
+    ResponseEntity<String> create(
             UserCreateDTO userModel,
             String authorizationHeader
     );
 
-    ResponseEntity update(
+    ResponseEntity<String> update(
             UserAlterDTO userModel,
             String authorizationHeader
     );
 
-    ResponseEntity alterPassword(
+    ResponseEntity<String> alterPassword(
             AlterPasswordDTO userModel,
             String authorizationHeader
     );

@@ -1,0 +1,16 @@
+POST http://localhost:8080/game/
+Content-Type: application/json
+
+{
+  "name": "Nome do Jogo",
+  "description": "Descrição do Jogo",
+  "cost": 10.0,
+  "prizeMultiplier": 2,
+  "prize": 0,
+  "type": {
+    "uuid": "6c2f5804-cbff-4d6a-b253-cd533c7a0884"
+  },
+  "initialDate": "2023-12-01T10:30:00",
+  "finalDate": "2023-12-08T10:30:00",
+  "drawDate": "2023-12-15T10:30:00"
+}

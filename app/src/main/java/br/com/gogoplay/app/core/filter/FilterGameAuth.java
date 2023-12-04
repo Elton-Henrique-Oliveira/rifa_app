@@ -1,17 +1,5 @@
 package br.com.gogoplay.app.core.filter;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
-import br.com.gogoplay.app.core.user.infraestructure.database.implementation.UserRepository;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-import java.util.Base64;
-
 //public class FilterGameAuth extends OncePerRequestFilter {
 
 //    @Autowired

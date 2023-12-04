@@ -1,10 +1,10 @@
-package br.com.gogoplay.app.core.user.infraestructure.service.implementation;
+package br.com.gogoplay.app.core.user.infra.service.implementation;
 
 import br.com.gogoplay.app.core.user.domain.entities.AlterPasswordDTO;
 import br.com.gogoplay.app.core.user.domain.entities.UserAlterDTO;
 import br.com.gogoplay.app.core.user.domain.entities.UserCreateDTO;
 import br.com.gogoplay.app.core.user.domain.usecase.implementation.UserUseCaseImplementation;
-import br.com.gogoplay.app.core.user.infraestructure.service.UserService;
+import br.com.gogoplay.app.core.user.infra.service.UserService;
 import br.com.gogoplay.app.core.utils.TokenUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,7 +31,7 @@ public class UserServiceImplementation implements UserService {
             @ApiResponse(responseCode = "500", description = "Erro ao tentar criar usuário."),
     })
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(
+    public ResponseEntity<String> create(
             @RequestBody UserCreateDTO userModel,
             @RequestHeader(name = "Authorization") String authorizationHeader
     ) {
@@ -49,7 +49,7 @@ public class UserServiceImplementation implements UserService {
             @ApiResponse(responseCode = "500", description = "Erro ao tentar alterar usuário."),
     })
     @PutMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(
+    public ResponseEntity<String> update(
             @RequestBody UserAlterDTO userModel,
             @RequestHeader(name = "Authorization") String authorizationHeader
     ) {
@@ -68,7 +68,7 @@ public class UserServiceImplementation implements UserService {
             @ApiResponse(responseCode = "500", description = "Erro ao tentar alterar senha."),
     })
     @PutMapping(value = "/alterPassword", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity alterPassword(
+    public ResponseEntity<String> alterPassword(
             @RequestBody AlterPasswordDTO alterPassword,
             @RequestHeader(name = "Authorization") String authorizationHeader
     ) {

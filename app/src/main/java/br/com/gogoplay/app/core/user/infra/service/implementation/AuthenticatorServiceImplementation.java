@@ -1,12 +1,12 @@
-package br.com.gogoplay.app.core.user.infraestructure.service.implementation;
+package br.com.gogoplay.app.core.user.infra.service.implementation;
 
 import br.com.gogoplay.app.core.user.domain.entities.AuthenticationDTO;
 import br.com.gogoplay.app.core.user.domain.entities.LoginResponseDTO;
 import br.com.gogoplay.app.core.user.domain.entities.RegisterDTO;
-import br.com.gogoplay.app.core.user.infraestructure.security.TokenService;
-import br.com.gogoplay.app.core.user.infraestructure.database.UserDataBase;
-import br.com.gogoplay.app.core.user.infraestructure.database.implementation.UserRepository;
-import br.com.gogoplay.app.core.user.infraestructure.service.AuthenticatorService;
+import br.com.gogoplay.app.core.user.infra.security.TokenService;
+import br.com.gogoplay.app.core.user.infra.database.UserDataBase;
+import br.com.gogoplay.app.core.user.infra.database.implementation.UserRepository;
+import br.com.gogoplay.app.core.user.infra.service.AuthenticatorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

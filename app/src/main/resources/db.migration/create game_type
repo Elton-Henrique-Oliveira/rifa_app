@@ -1,0 +1,7 @@
+insert into game_type (uuid, code, created_at, label, modified_at, status_code)
+values
+('6c2f5804-cbff-4d6a-b253-cd533c7a0884',1,'2023-12-04 17:58:48.18814','Jogo do bicho','2023-12-04 17:58:48.18814',0);
+
+insert into game_type (uuid, code, created_at, label, modified_at, status_code)
+values
+('321d8a40-92ea-11ee-b9d1-0242ac120002',2,'2023-12-04 17:58:48.18814','Rifa','2023-12-04 17:58:48.18814',0);

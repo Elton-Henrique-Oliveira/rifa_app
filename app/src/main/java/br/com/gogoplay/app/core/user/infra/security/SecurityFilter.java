@@ -1,6 +1,6 @@
-package br.com.gogoplay.app.core.user.infraestructure.security;
+package br.com.gogoplay.app.core.user.infra.security;
 
-import br.com.gogoplay.app.core.user.infraestructure.database.implementation.UserRepository;
+import br.com.gogoplay.app.core.user.infra.database.implementation.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

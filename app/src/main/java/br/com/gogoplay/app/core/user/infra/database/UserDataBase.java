@@ -1,4 +1,4 @@
-package br.com.gogoplay.app.core.user.infraestructure.database;
+package br.com.gogoplay.app.core.user.infra.database;
 
 import br.com.gogoplay.app.core.user.domain.entities.UserRole;
 import com.fasterxml.jackson.annotation.JsonInclude;
