@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.sound.midi.SysexMessage;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,5 +101,25 @@ public class GameUseCaseImplementation implements GameUseCase {
         gameRepository.save(newGame);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newGame);
+    }
+
+    public ResponseEntity listAllGame(){
+
+        List<GameDataBase> listGame = new ArrayList<>();
+
+        listGame = gameRepository.findAll();
+
+        return ResponseEntity.status(HttpStatus.OK).body(listGame);
+    }
+
+    public ResponseEntity getGameByID(int code){
+
+        Optional<GameDataBase> gameReturn = gameRepository.findByCode(code);
+
+        if(gameReturn.isEmpty()){
+            return ResponseEntity.status(HttpStatus.OK).body("Nenhum game encontrado para o Codigo: " + code);
+        }else{
+            return ResponseEntity.status(HttpStatus.OK).body(gameReturn);
+        }
     }
 }
