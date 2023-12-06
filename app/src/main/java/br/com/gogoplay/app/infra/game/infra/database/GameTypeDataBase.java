@@ -1,5 +1,6 @@
 package br.com.gogoplay.app.infra.game.infra.database;
 
+import br.com.gogoplay.app.infra.game.domain.entities.GameTypeCreateDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -33,4 +34,12 @@ public class GameTypeDataBase {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    public GameTypeDataBase(
+            GameTypeCreateDTO gameTypeDTO
+    ) {
+        this.code = gameTypeDTO.code();
+        this.label = gameTypeDTO.label();
+        this.statusCode = 0;
+    }
 }
