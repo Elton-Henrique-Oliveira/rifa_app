@@ -41,7 +41,6 @@ public class GameDataBase {
 
     private BigDecimal prize;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "game_type_uuid")
     private GameTypeDataBase type;

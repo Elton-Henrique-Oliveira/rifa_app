@@ -31,7 +31,12 @@ public class GameUseCaseImplementation implements GameUseCase {
     @Override
     public ResponseEntity create(GameCreateDTO gameModel) {
 
+        GameTypeDataBase gameType = null;
         List<String> errors = new ArrayList<>();
+
+        if(gameModel == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(GAME_CREATE_NOT_INFORMED);
+        }
 
         if (StringUtils.isBlank(gameModel.name())) {
             errors.add(NAME_NOT_INFORMED);
@@ -45,8 +50,16 @@ public class GameUseCaseImplementation implements GameUseCase {
             errors.add(BET_MULTIPLIER_OR_FINAL_PRIZE_NOT_INFORMED);
         }
 
-        if (gameModel.type().getUuid() == null) {
+        if (gameModel.type() == null || gameModel.type().getCode() == null) {
             errors.add(GAME_TYPE_NOT_INFORMED);
+        }
+
+        if (gameModel.type() != null && gameModel.type().getUuid() != null) {
+            gameType = gameTypeRepository.findByUUID(gameModel.type().getUuid());
+        }
+
+        if (gameModel.type() != null && gameType == null) {
+            errors.add(TYPE_NOT_REGISTERED);
         }
 
         if (gameModel.initialDate() == null) {
@@ -61,24 +74,11 @@ public class GameUseCaseImplementation implements GameUseCase {
             errors.add(DRAW_DATE_NOT_INFORMED);
         }
 
-        if (gameModel.type().getUuid() == null) {
-            errors.add(GAME_TYPE_NOT_INFORMED);
-        }
-
-        GameTypeDataBase gameType = gameTypeRepository.findByUUID(gameModel.type().getUuid());
-        if (gameType == null) {
-            errors.add(TYPE_NOT_REGISTERED);
-        }
-
-        System.out.println(gameModel.type().getUuid());
-
-        assert gameModel.finalDate() != null;
-        if (gameModel.finalDate().isBefore(gameModel.initialDate())) {
+        if (gameModel.finalDate() != null && gameModel.initialDate() != null && gameModel.finalDate().isBefore(gameModel.initialDate())) {
             errors.add(FINAL_DATE_IS_BEFORE_INITIAL_DATE);
         }
 
-        assert gameModel.drawDate() != null;
-        if (gameModel.drawDate().isBefore(gameModel.initialDate())) {
+        if (gameModel.drawDate() != null && gameModel.initialDate() != null && gameModel.drawDate().isBefore(gameModel.initialDate())) {
             errors.add(DRAW_DATE_IS_BEFORE_INITIAL_DATE);
         }
 
