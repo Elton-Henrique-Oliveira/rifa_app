@@ -2,6 +2,8 @@ package br.com.gogoplay.app.infra.game.domain.errors;
 
 public class GameErrors {
 
+    public static final String GAME_CREATE_NOT_INFORMED = "JSON não foi passado no corpo da requisição";
+
     public static final String NAME_NOT_INFORMED = "Nome do jogo não informado";
 
     public static final String DESCRIPTION_NOT_INFORMED = "Descrição do jogo não informado";
