@@ -1,5 +1,6 @@
 package br.com.gogoplay.app.infra.game.infra.database;
 
+import br.com.gogoplay.app.infra.game.domain.entities.GameCreateDTO;
 import br.com.gogoplay.app.infra.game.infra.database.implementation.GameTypeRepository;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity(name = "game")
 @EqualsAndHashCode(of = "id")
-public class GameDataBase{
+public class GameDataBase {
 
     @Id
     @Column(unique = true)
@@ -65,24 +66,15 @@ public class GameDataBase{
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
-    public GameDataBase(String name,
-                        String description,
-                        BigDecimal cost,
-                        int prizeMultiplier,
-                        BigDecimal prize,
-                        LocalDateTime initialDate,
-                        LocalDateTime finalDate,
-                        LocalDateTime drawDate,
-                        GameTypeDataBase type
-    ) {
-        this.name = name;
-        this.description = description;
-        this.cost = cost;
-        this.prizeMultiplier = prizeMultiplier;
-        this.prize = prize;
-        this.initialDate = initialDate;
-        this.finalDate = finalDate;
-        this.drawDate = drawDate;
-        this.type = type;
+    public GameDataBase(GameCreateDTO newGame) {
+        this.name = newGame.name();
+        this.description = newGame.description();
+        this.cost = newGame.cost();
+        this.prizeMultiplier = newGame.prizeMultiplier();
+        this.prize = newGame.prize();
+        this.initialDate = newGame.initialDate();
+        this.finalDate = newGame.finalDate();
+        this.drawDate = newGame.drawDate();
+        this.type = newGame.type();
     }
 }

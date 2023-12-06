@@ -61,7 +61,7 @@ public class GameUseCaseImplementation implements GameUseCase {
             errors.add(DRAW_DATE_NOT_INFORMED);
         }
 
-        if(gameModel.type().getUuid() == null){
+        if (gameModel.type().getUuid() == null) {
             errors.add(GAME_TYPE_NOT_INFORMED);
         }
 
@@ -73,12 +73,12 @@ public class GameUseCaseImplementation implements GameUseCase {
         System.out.println(gameModel.type().getUuid());
 
         assert gameModel.finalDate() != null;
-        if(gameModel.finalDate().isBefore(gameModel.initialDate())){
+        if (gameModel.finalDate().isBefore(gameModel.initialDate())) {
             errors.add(FINAL_DATE_IS_BEFORE_INITIAL_DATE);
         }
 
         assert gameModel.drawDate() != null;
-        if(gameModel.drawDate().isBefore(gameModel.initialDate())){
+        if (gameModel.drawDate().isBefore(gameModel.initialDate())) {
             errors.add(DRAW_DATE_IS_BEFORE_INITIAL_DATE);
         }
 
@@ -86,24 +86,14 @@ public class GameUseCaseImplementation implements GameUseCase {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.join(", ", errors));
         }
 
-        GameDataBase newGame = new GameDataBase(
-                gameModel.name(),
-                gameModel.description(),
-                gameModel.cost(),
-                gameModel.prizeMultiplier(),
-                gameModel.prize(),
-                gameModel.initialDate(),
-                gameModel.finalDate(),
-                gameModel.drawDate(),
-                gameModel.type()
-        );
+        GameDataBase newGame = new GameDataBase(gameModel);
 
         gameRepository.save(newGame);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newGame);
     }
 
-    public ResponseEntity listAllGame(){
+    public ResponseEntity listAllGame() {
 
         List<GameDataBase> listGame = new ArrayList<>();
 
@@ -112,13 +102,13 @@ public class GameUseCaseImplementation implements GameUseCase {
         return ResponseEntity.status(HttpStatus.OK).body(listGame);
     }
 
-    public ResponseEntity getGameByID(int code){
+    public ResponseEntity getGameByID(int code) {
 
         Optional<GameDataBase> gameReturn = gameRepository.findByCode(code);
 
-        if(gameReturn.isEmpty()){
+        if (gameReturn.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body("Nenhum game encontrado para o Codigo: " + code);
-        }else{
+        } else {
             return ResponseEntity.status(HttpStatus.OK).body(gameReturn);
         }
     }
