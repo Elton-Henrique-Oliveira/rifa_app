@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,10 +40,11 @@ public class GameServiceImplementation implements GameService {
             @ApiResponse(responseCode = "200", description = "Consultado os jogos com sucesso."),
             @ApiResponse(responseCode = "401", description = "Usuário não autenticado."),
             @ApiResponse(responseCode = "403", description = "Usuário sem permissão."),
+            @ApiResponse(responseCode = "404", description = "Nenhum jogo foi encontrado banco de dados."),
             @ApiResponse(responseCode = "500", description = "Erro ao tentar listar o jogo."),
     })
     @GetMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> listAllGame() {
+    public ResponseEntity listAllGame() {
         return gameUseCase.listAllGame();
     }
 

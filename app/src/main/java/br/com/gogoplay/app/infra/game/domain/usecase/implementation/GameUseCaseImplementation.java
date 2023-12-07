@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,9 +96,15 @@ public class GameUseCaseImplementation implements GameUseCase {
 
     public ResponseEntity listAllGame() {
 
-        List<GameDataBase> listGame = new ArrayList<>();
+        List<GameDataBase> listGame = gameRepository.findAll();
 
-        listGame = gameRepository.findAll();
+        for(GameDataBase list : listGame){
+            System.out.println(list);
+        }
+
+        if(listGame.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(listGame);
     }
