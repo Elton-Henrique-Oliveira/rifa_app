@@ -1,12 +1,14 @@
 package br.com.gogoplay.app.infra.game.infra.service.implementation;
 
 import br.com.gogoplay.app.infra.game.domain.entities.GameCreateDTO;
+import br.com.gogoplay.app.infra.game.domain.entities.GameUpdateDTO;
 import br.com.gogoplay.app.infra.game.domain.usecase.GameUseCase;
 import br.com.gogoplay.app.infra.game.infra.service.GameService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.ws.rs.PUT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +37,36 @@ public class GameServiceImplementation implements GameService {
         return gameUseCase.create(gameModel);
     }
 
+    @Operation(summary = "Realiza a criação de um novo jogo", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Alteração do jogo feito com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Informações não foram preenchidas corretamente."),
+            @ApiResponse(responseCode = "401", description = "Usuário não autenticado."),
+            @ApiResponse(responseCode = "403", description = "Usuário sem permissão."),
+            @ApiResponse(responseCode = "500", description = "Erro ao tentar alterar jogo."),
+    })
+    @PutMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> update(
+            @RequestBody GameUpdateDTO gameModel
+    ) {
+        return this.gameUseCase.update(gameModel);
+    }
+
+    @Operation(summary = "Realiza a criação de um novo jogo", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Criação do jogo feito com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Informações não foram preenchidas corretamente."),
+            @ApiResponse(responseCode = "401", description = "Usuário não autenticado."),
+            @ApiResponse(responseCode = "403", description = "Usuário sem permissão."),
+            @ApiResponse(responseCode = "500", description = "Erro ao tentar criar jogo."),
+    })
+    @DeleteMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteByCode(
+            @RequestBody int code
+    ) {
+        return null;
+    }
+
     @Operation(summary = "Lista um Json com todos os jogos cadastrados", method = "POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Consultado os jogos com sucesso."),
@@ -59,6 +91,6 @@ public class GameServiceImplementation implements GameService {
     public ResponseEntity<String> getGameByCode(
             @PathVariable("id") int code
     ) {
-        return gameUseCase.getGameByID(code);
+        return gameUseCase.getGameByCode(code);
     }
 }

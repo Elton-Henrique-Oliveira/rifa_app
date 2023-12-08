@@ -1,0 +1,14 @@
+PUT http://localhost:8080/game/
+Content-Type: application/json
+
+{
+  "code" : 15,
+  "name": "teste",
+  "description": "teste update elton",
+  "cost": 69.0,
+  "prizeMultiplier": 9,
+  "prize": 0,
+  "initialDate": "2023-12-01T10:30:00",
+  "finalDate": "2023-12-15T10:30:00",
+  "drawDate": "2023-12-25T10:30:00"
+}

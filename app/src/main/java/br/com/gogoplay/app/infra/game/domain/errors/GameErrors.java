@@ -4,6 +4,12 @@ public class GameErrors {
 
     public static final String GAME_CREATE_NOT_INFORMED = "JSON não foi passado no corpo da requisição";
 
+    public static final String GAME_UPDATE_NOT_INFORMED = "JSON não foi passado no corpo da requisição";
+
+    public static final String CODE_NOR_INFORMED = "Codigo do jogo não foi informadoa";
+
+    public static final String GAME_NOT_FOUND_IN_DATABASE = "Jogo não encontrado no banco de dados";
+    public static final String GAME_CODE_GAS_TO_BE_GREATER_THAN_ZERO = "Codigo do jogo tem que ser maior que zero";
     public static final String NAME_NOT_INFORMED = "Nome do jogo não informado";
 
     public static final String DESCRIPTION_NOT_INFORMED = "Descrição do jogo não informado";
