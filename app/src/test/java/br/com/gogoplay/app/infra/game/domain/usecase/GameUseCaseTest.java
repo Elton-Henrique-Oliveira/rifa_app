@@ -246,6 +246,6 @@ class GameUseCaseTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertNull(response.getBody());
 
-        verify(gameRepository, times(1)).findAll();
+        verify(this.gameRepository, times(1)).findAll();
     }
 }
