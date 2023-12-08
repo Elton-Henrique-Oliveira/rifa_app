@@ -2,6 +2,7 @@ package br.com.gogoplay.app.infra.game.domain.usecase;
 
 import br.com.gogoplay.app.infra.game.domain.entities.GameCreateDTO;
 import br.com.gogoplay.app.infra.game.domain.entities.GameTypeCreateDTO;
+import br.com.gogoplay.app.infra.game.domain.entities.GameUpdateDTO;
 import br.com.gogoplay.app.infra.game.domain.usecase.implementation.GameUseCaseImplementation;
 import br.com.gogoplay.app.infra.game.infra.database.GameDataBase;
 import br.com.gogoplay.app.infra.game.infra.database.GameTypeDataBase;
@@ -247,5 +248,63 @@ class GameUseCaseTest {
         assertNull(response.getBody());
 
         verify(this.gameRepository, times(1)).findAll();
+    }
+
+    @Test
+    @DisplayName("Verifica se irá fazer a validação correta para caso o JSON não seja passado")
+    void updateCase1 (){
+
+        var response = this.gameUseCase.update(null);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(response.getBody(), GAME_UPDATE_NOT_INFORMED);
+    }
+
+    @Test
+    @DisplayName("Verifica se irá fazer a validação correta para caso o code seja menor ou = 0")
+    void updateCase2 (){
+        GameCreateDTO gameCreate = new GameCreateDTO( "Elton", "Elton testando", new BigDecimal(45), 9, new BigDecimal(0), null, LocalDateTime.now(), LocalDateTime.now().minusDays(1), LocalDateTime.now().minusDays(2));
+
+        when( this.gameRepository.findByCode(-1)).thenReturn(Optional.of(new GameDataBase(gameCreate)));
+
+        GameUpdateDTO gameAlter = new GameUpdateDTO(-1, "Elton", "Elton testando", new BigDecimal(45), 9, new BigDecimal(0), LocalDateTime.now(), LocalDateTime.now().minusDays(1), LocalDateTime.now().minusDays(2));
+        var response = this.gameUseCase.update(gameAlter);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(response.getBody(), GAME_CODE_GAS_TO_BE_GREATER_THAN_ZERO);
+
+        verify(this.gameRepository, times(1)).findByCode(-1);
+    }
+
+    @Test
+    @DisplayName("Verifica se irá fazer a validação correta para um codigo que não existe")
+    void updateCase3 (){
+        when( this.gameRepository.findByCode(5)).thenReturn(Optional.empty());
+
+        GameUpdateDTO gameAlter = new GameUpdateDTO(5, "Elton", "Elton testando", new BigDecimal(45), 9, new BigDecimal(0), LocalDateTime.now(), LocalDateTime.now().minusDays(1), LocalDateTime.now().minusDays(2));
+        var response = this.gameUseCase.update(gameAlter);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(response.getBody(), GAME_NOT_FOUND_IN_DATABASE);
+
+        verify(this.gameRepository, times(1)).findByCode(5);
+    }
+
+    @Test
+    @DisplayName("Verifica se irá alterar corretamente")
+    void updateCase4 (){
+
+        GameCreateDTO gameCreate = new GameCreateDTO( "Elton", "Elton testando", new BigDecimal(45), 9, new BigDecimal(0), null, LocalDateTime.now(), LocalDateTime.now().minusDays(1), LocalDateTime.now().minusDays(2));
+
+        when( this.gameRepository.findByCode(1)).thenReturn(Optional.of(new GameDataBase(gameCreate)));
+
+        GameUpdateDTO gameAlter = new GameUpdateDTO(1, "Elton", "Elton testando", new BigDecimal(45), 9, new BigDecimal(0), LocalDateTime.now(), LocalDateTime.now().minusDays(1), LocalDateTime.now().minusDays(2));
+
+        var response = this.gameUseCase.update(gameAlter);
+
+        Optional<GameDataBase> gameNow = this.gameRepository.findByCode(1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(response.getBody(), gameNow);
     }
 }

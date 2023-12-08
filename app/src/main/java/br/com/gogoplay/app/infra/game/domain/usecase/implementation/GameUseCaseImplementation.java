@@ -97,20 +97,24 @@ public class GameUseCaseImplementation implements GameUseCase {
     public ResponseEntity update(
             GameUpdateDTO gameModel
     ){
+        List<String> errors = new ArrayList<>();
+
         if(gameModel == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(GAME_UPDATE_NOT_INFORMED);
         }
 
         if(gameModel.code() <= 0){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(GAME_CODE_GAS_TO_BE_GREATER_THAN_ZERO);
+            errors.add(GAME_CODE_GAS_TO_BE_GREATER_THAN_ZERO);
         }
 
         Optional<GameDataBase> gameVerify = this.gameRepository.findByCode(gameModel.code());
 
         if(gameVerify.isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(GAME_NOT_FOUND_IN_DATABASE);
+            errors.add(GAME_NOT_FOUND_IN_DATABASE);
         }
-
+        if (!errors.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.join(", ", errors));
+        }
         this.gameRepository.updateGameByCode(gameModel.name(), gameModel.description(), gameModel.cost(), gameModel.prizeMultiplier(), gameModel.prize(), gameModel.initialDate(), gameModel.finalDate(), gameModel.drawDate(), gameModel.code());
         Optional<GameDataBase> gameNow = this.gameRepository.findByCode(gameModel.code());
 
